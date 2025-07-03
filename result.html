@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Prediction Result</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">Prediction Result</h1>
+        <div class="result-box">
+            <p class="result-text">Predicted Weekly Sales: <span class="highlight">{{ sales }}</span></p>
+            <a href="{{ url_for('index') }}" class="btn">Back to Predict</a>
+        </div>
+    </div>
+</body>
+</html>
+
