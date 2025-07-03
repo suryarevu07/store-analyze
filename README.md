@@ -1,63 +1,79 @@
-# Department-Wide Sales Prediction and Analysis
+# 🛒 Retail Sales Forecasting and Insights
 
-## Project Overview
+This project is a **Retail Sales Forecasting and Recommendation System** built using **Flask**, **HTML**, and **CSS**. It predicts department-wide sales for the following year, models the impact of markdowns during holiday weeks, and provides actionable business recommendations to maximize revenue.
 
-This project focuses on predicting department-wide sales for each store for the upcoming year and analyzing the effects of markdowns during holiday weeks. Additionally, it provides actionable recommendations to maximize business impact based on the insights drawn. 
+---
 
-## Objectives
+## 📌 Table of Contents
 
-1. *Sales Prediction*: Build a model to forecast department-wide sales for each store for the following year.
-2. *Markdown Analysis*: Analyze the effects of markdowns during holiday weeks to determine their impact on sales.
-3. *Recommendations*: Provide actionable insights and recommendations, prioritizing those with the largest potential business impact.
+- [Overview](#overview)
+- [Problem Statement](#problem-statement)
+- [Objectives](#objectives)
+- [Tech Stack](#tech-stack)
+- [Features](#features)
+- [Project Structure](#project-structure)
+- [Installation & Setup](#installation--setup)
+- [Usage](#usage)
+- [Model Evaluation](#model-evaluation)
+- [Insights & Recommendations](#insights--recommendations)
+- [Future Enhancements](#future-enhancements)
+- [License](#license)
 
-## Project Approach
+---
 
-### Step 1: Data Collection and Preprocessing
-- Collect historical sales data, markdown data, holiday information, and any other relevant features.
-- Clean the data to handle missing values, outliers, and inconsistencies.
-- Engineer features such as holiday indicators, markdown percentages, and seasonality factors.
+## 📖 Overview
 
-### Step 2: Exploratory Data Analysis (EDA)
-- Visualize trends, seasonality, and anomalies in sales data.
-- Analyze the relationship between markdowns and sales during holiday weeks.
-- Examine sales patterns across different stores and departments.
+Forecasting retail sales is crucial for inventory planning, marketing, and business strategy. This project uses historical sales, markdowns, and holiday data to build a predictive system for store-department-level sales forecasting.
 
-### Step 3: Sales Prediction Model
-- Use time-series forecasting methods (e.g., ARIMA, SARIMA, or Prophet) or machine learning models (e.g., Random Forest, XGBoost, or LSTM) to predict department-wise sales for the next year.
-- Split the data into training and testing sets and evaluate the model's performance using metrics such as RMSE, MAE, or MAPE.
+---
 
-### Step 4: Markdown Effect Analysis
-- Build a regression or causal inference model to quantify the effect of markdowns on sales during holiday weeks.
-- Use hypothesis testing to confirm statistical significance.
+## ❓ Problem Statement
 
-### Step 5: Actionable Recommendations
-- Identify key drivers of sales and markdown effectiveness.
-- Provide prioritized recommendations to improve sales, focusing on the largest potential business impact.
+> **The Task:**
+- Predict department-wide weekly sales for each store for the following year.
+- Model the effects of **markdown events** on **holiday weeks**.
+- Provide prioritized **recommendations** based on the insights drawn.
 
-### Step 6: Visualization and Reporting
-- Create clear and interactive dashboards using tools like Power BI, Tableau, or Streamlit.
-- Present findings and recommendations to stakeholders in a concise report.
+---
 
-## Tools and Technologies
+## 🎯 Objectives
 
-- *Programming Languages*: Python (NumPy, Pandas, Matplotlib, Seaborn, Scikit-learn, Statsmodels)
-- *Visualization*: Tableau, Power BI, or Matplotlib
-- *Machine Learning*: XGBoost, Random Forest, LSTM, ARIMA/SARIMA
-- *Deployment*: Streamlit for interactive dashboards
-- *Version Control*: Git and GitHub
+- Analyze historical sales, markdowns, holidays, and economic indicators.
+- Build a robust regression model to forecast future sales.
+- Visualize performance metrics and business-impact insights.
+- Deploy an interactive web app for real-time predictions.
 
-## Results and Insights
+---
 
-1. *Sales Prediction*:
-   - Forecasted department-wise sales for the next year with an accuracy of XX%.
-   - Identified peak seasons and departments with significant sales growth potential.
+## ⚙️ Tech Stack
 
-2. *Markdown Analysis*:
-   - Markdown increases sales during holiday weeks by approximately XX%.
-   - Departments A, B, and C benefit the most from markdowns.
+| Component     | Technology Used         |
+|---------------|--------------------------|
+| Backend       | Python, Flask            |
+| Frontend      | HTML5, CSS3              |
+| Data Handling | pandas, NumPy            |
+| Modeling      | scikit-learn (RandomForest, DecisionTree) |
+| Visualization | Chart.js, matplotlib     |
+| Deployment    | Flask local server / Render |
 
-3. *Recommendations*:
-   - Increase markdowns strategically during holiday weeks for high-performing departments.
-   - Optimize inventory based on forecasted sales to reduce overstocking and stockouts.
-   - Focus on stores and departments with the highest potential for revenue growth.
+---
+
+## ✨ Features
+
+- 🔮 Predict sales by store, department, week, and holiday status
+- 📈 Model markdown impact on sales
+- 📊 Show evaluation metrics (R², RMSE, MAE)
+- ✅ Upload data, preprocess, and auto-forecast
+- 📂 Export predictions to CSV
+- 💡 Actionable business insights and strategy suggestions
+
+---
+
+## 🏗️ Project Structure
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/yourusername/retail-sales-forecast.git
+cd retail-sales-forecast
 
