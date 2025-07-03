@@ -1,82 +1,82 @@
-import streamlit as st
-import numpy as np
+from flask import Flask, render_template, request, jsonify, redirect, url_for
 import pandas as pd
-import joblib  # To load the trained model
+import numpy as np
+import joblib
+import traceback
 
-# Load the pre-trained model (replace 'model.pkl' with your trained model's file path)
-model = joblib.load("random_forest_model.pkl")
-df=pd.read_csv('sale_pre.csv')
+app = Flask(__name__)
 
-# Feature names used in the model
-feature_names = [
-    'holiday_sales_boost', 
-    'dept_size_interaction', 
-    'size_bin', 
-    'Dept',
-    'total_markdown', 
-    'total_markdown_avg', 
-    'month',
-    'markdown_holiday_impact'
-]
 
-# Descriptions for each feature
-feature_descriptions = {
-    'holiday_sales_boost': 'Sales boost during holidays (e.g., Christmas, Black Friday).',
-    'dept_size_interaction': 'Size of interaction in the department (e.g., number of visits or transactions).',
-    'size_bin': 'Categorical variable representing different size bins of the products.',
-    'Dept': 'Department ID (e.g., 1 for Electronics, 2 for Clothing).',
-    'total_markdown': 'Total markdown amount applied to products.',
-    'total_markdown_avg': 'Average markdown amount applied across different periods.',
-    'month': 'Month in which sales are recorded.',
-    'markdown_holiday_impact': 'Impact of markdowns during holidays on sales.'
-}
-
-# Streamlit App Starts Here
-st.title("Sales Prediction App")
-st.write("Enter values for the features below to get a prediction:")
-
-# Create a form for user input
-with st.form("prediction_form"):
-    st.subheader("Enter Input Values")
-
-    # Dynamic input fields with tooltips and descriptions
-    user_input = {}
-    for feature in feature_names:
-        st.write(f"### {feature.replace('_', ' ').capitalize()}")
-        st.info(feature_descriptions[feature])
-
-        if feature in ['holiday_sales_boost', 'total_markdown', 'total_markdown_avg', 'markdown_holiday_impact']:
-            user_input[feature] = st.number_input(
-                f"Enter {feature.replace('_', ' ').capitalize()}",
-                min_value=0.0,
-                format="%.2f"
-            )
-        elif feature in ['Dept', 'size_bin']:
-            user_input[feature] = st.selectbox(
-                f"Select {feature.replace('_', ' ').capitalize()}",
-                options=sorted(df[feature].unique())
-            )
-        else:
-            user_input[feature] = st.number_input(
-                f"Enter {feature.replace('_', ' ').capitalize()}",
-                min_value=0,
-                step=1
-            )
-
-    # Submit button st.form_submit_button() 
-    submitted = st.form_submit_button("Predict")
-
-# When the user clicks the predict button
-if submitted:
-    # Prepare the input data for prediction
-    user_data = pd.DataFrame([list(user_input.values())], columns=feature_names)
-    st.write("Your Input Data:")
-    st.dataframe(user_data)
-
-    # Predict
+def load_artifacts():
+    model_path = r"D:\model (1).pkl"
+    scaler_path = r"D:\scaler (9).pkl"
+    print(f"Checking {model_path}, {scaler_path}")
     try:
-        prediction = model.predict(user_data)[0]
-        st.subheader("Prediction Result")
-        st.success(f"Predicted Sales: ${prediction:,.2f}")
+        model = joblib.load(model_path)
+        scaler = joblib.load(scaler_path)
+        print("Artifacts loaded successfully")
+        return model, scaler
     except Exception as e:
-        st.error(f"Error occurred during prediction: {e}")
+        print(f"Error loading artifacts: {e}")
+        return None, None
+
+model, scaler = load_artifacts()
+selected_features = ['Dept', 'Size', 'Type', 'Store', 'Week', 'CPI', 'Unemployment', 'Temperature']
+
+def get_average_size(df, store, dept):
+    mask = (df['Store'] == store) & (df['Dept'] == dept)
+    return df[mask]['Size'].mean() if mask.any() else df['Size'].mean()
+
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    if request.method == 'POST':
+        try:
+            store = int(request.form['store'])
+            dept = int(request.form['dept'])
+            type_val = int(request.form['type'])
+            week = int(request.form['week'])
+            cpi = float(request.form['cpi'])
+            unemployment = float(request.form['unemployment'])
+            temperature = float(request.form['temperature'])
+
+       
+            df = pd.DataFrame()  
+            size = 0 
+            if not df.empty:
+                size = get_average_size(df, store, dept)
+                if np.isnan(size):
+                    size = df['Size'].mean()
+
+            pred_data = {
+                'Dept': [dept],
+                'Size': [size],
+                'Type': [type_val],
+                'Store': [store],
+                'Week': [week],
+                'CPI': [cpi],
+                'Unemployment': [unemployment],
+                'Temperature': [temperature]
+            }
+            pred_df = pd.DataFrame(pred_data)
+            X_pred = pred_df[selected_features]
+            X_scaled = scaler.transform(X_pred)
+            pred_log = model.predict(X_scaled)
+            predicted_sales = np.expm1(pred_log)[0]
+
+            return redirect(url_for('results', sales=f"${predicted_sales:,.2f}"))
+        except Exception as e:
+            print(f"Error in prediction: {traceback.format_exc()}")
+            return jsonify({'error': f"An error occurred: {str(e)}"}), 500
+
+    return render_template('index.html')
+
+@app.route('/results')
+def results():
+    sales = request.args.get('sales', 'N/A')
+    return render_template('results.html', sales=sales)
+
+if __name__ == '__main__':
+    app.run(debug=True, port=5000)
+
+
+
