@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Prediction</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">Sales Prediction Tool</h1>
+        <form method="POST" class="form">
+            <div class="form-group">
+                <label for="store">Store Number (1-50):</label>
+                <input type="number" id="store" name="store" min="1" max="50" required>
+            </div>
+            <div class="form-group">
+                <label for="dept">Department Number (1-100):</label>
+                <input type="number" id="dept" name="dept" min="1" max="100" required>
+            </div>
+            <div class="form-group">
+                <label for="type">Type (1=A, 2=B, 0=Other):</label>
+                <input type="number" id="type" name="type" min="0" max="2" required>
+            </div>
+            <div class="form-group">
+                <label for="week">Week (1-52):</label>
+                <input type="number" id="week" name="week" min="1" max="52" required>
+            </div>
+            <div class="form-group">
+                <label for="cpi">CPI (e.g., 211.096):</label>
+                <input type="number" id="cpi" name="cpi" step="0.001" required>
+            </div>
+            <div class="form-group">
+                <label for="unemployment">Unemployment Rate (e.g., 8.106):</label>
+                <input type="number" id="unemployment" name="unemployment" step="0.001" required>
+            </div>
+            <div class="form-group">
+                <label for="temperature">Temperature (e.g., 42.31):</label>
+                <input type="number" id="temperature" name="temperature" step="0.01" required>
+            </div>
+            <button type="submit" class="btn">Predict Sales</button>
+        </form>
+    </div>
+</body>
+</html>
+
